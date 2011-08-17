@@ -2,7 +2,6 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   onload="init(evt)"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -11,20 +10,20 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   onload="init(evt)"
    width="800"
    height="600"
    id="anaconda-01-welcome"
    version="1.1"
-   inkscape:version="0.48.1 r9760"
+   inkscape:version="0.48+devel r10506 custom"
    sodipodi:docname="01-welcome.svg"
    inkscape:export-filename="/home/duffy/SparkleShare/fedora-ux/Projects/Anaconda/Prototypes/Screens/PNG/01-welcome.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
    style="display:inline">
-
   <script
      type="text/ecmascript"
-     id="magicmockup"><![CDATA[
+     id="magicmockup">
 
 // Global Variables
 // Stores the currently-visible layer, initially set to the very first screen
@@ -78,11 +77,11 @@ function hideLayer(layer) {
 function inkscapeLayersToIDs() {
 
   var layers = new Array();
-  var groups = document.querySelectorAll("g");
+  var groups = document.querySelectorAll(&quot;g&quot;);
   for (var group in groups) {
-     if(/* the group can have its attributes retrieved => */ groups[group].getAttributeNS && /* the group has a label => */ groups[group].getAttributeNS("http://www.inkscape.org/namespaces/inkscape",'label') && /* the group has a groupmode set to layer => */ groups[group].getAttributeNS("http://www.inkscape.org/namespaces/inkscape",'groupmode')==='layer' && /* the group id starts with the substring 'layer' => */ groups[group].getAttributeNS(null,"id").substring(0,5)==='layer' && /* the matching substring isn't null => */ groups[group].getAttributeNS(null,"id").substring(0,5) != 'null') {
-        layers[groups[group].getAttributeNS("http://www.inkscape.org/namespaces/inkscape",'label')] = groups[group];
-        groups[group].setAttributeNS(null,"id",groups[group].getAttributeNS("http://www.inkscape.org/namespaces/inkscape",'label'));
+     if(/* the group can have its attributes retrieved =&gt; */ groups[group].getAttributeNS &amp;&amp; /* the group has a label =&gt; */ groups[group].getAttributeNS(&quot;http://www.inkscape.org/namespaces/inkscape&quot;,'label') &amp;&amp; /* the group has a groupmode set to layer =&gt; */ groups[group].getAttributeNS(&quot;http://www.inkscape.org/namespaces/inkscape&quot;,'groupmode')==='layer' &amp;&amp; /* the group id starts with the substring 'layer' =&gt; */ groups[group].getAttributeNS(null,&quot;id&quot;).substring(0,5)==='layer' &amp;&amp; /* the matching substring isn't null =&gt; */ groups[group].getAttributeNS(null,&quot;id&quot;).substring(0,5) != 'null') {
+        layers[groups[group].getAttributeNS(&quot;http://www.inkscape.org/namespaces/inkscape&quot;,'label')] = groups[group];
+        groups[group].setAttributeNS(null,&quot;id&quot;,groups[group].getAttributeNS(&quot;http://www.inkscape.org/namespaces/inkscape&quot;,'label'));
      }
   }
   return layers;
@@ -105,7 +104,7 @@ function nextScreen(evt,layer) {
  
   // if the passed-in layer is not in this file, look it up.
   if (allScreenNames[layer]) {
-  	document.location.href = allScreenNames[layer]+"#"+layer;
+  	document.location.href = allScreenNames[layer]+&quot;#&quot;+layer;
   return;
   }
 }
@@ -128,12 +127,12 @@ function indexScreensInFile(filename) {
 	if (request.status == 0) {
 		var xmlThingy = request.responseXML;
   		var layers = new Array();
-  		var groups = xmlThingy.documentElement.querySelectorAll("g");
+  		var groups = xmlThingy.documentElement.querySelectorAll(&quot;g&quot;);
   		for (var group in groups) {
-     			if(/* the group can have its attributes retrieved => */ groups[group].getAttributeNS && /* the group has a label => */ groups[group].getAttributeNS("http://www.inkscape.org/namespaces/inkscape",'label') && /* the group has a groupmode set to layer => */ groups[group].getAttributeNS("http://www.inkscape.org/namespaces/inkscape",'groupmode')==='layer' && /* the group id starts with the substring 'layer' => */ groups[group].getAttributeNS(null,"id").substring(0,5)==='layer' && /* the matching substring isn't null => */ groups[group].getAttributeNS(null,"id").substring(0,5) != null) {
-				var label = groups[group].getAttributeNS("http://www.inkscape.org/namespaces/inkscape",'label');
+     			if(/* the group can have its attributes retrieved =&gt; */ groups[group].getAttributeNS &amp;&amp; /* the group has a label =&gt; */ groups[group].getAttributeNS(&quot;http://www.inkscape.org/namespaces/inkscape&quot;,'label') &amp;&amp; /* the group has a groupmode set to layer =&gt; */ groups[group].getAttributeNS(&quot;http://www.inkscape.org/namespaces/inkscape&quot;,'groupmode')==='layer' &amp;&amp; /* the group id starts with the substring 'layer' =&gt; */ groups[group].getAttributeNS(null,&quot;id&quot;).substring(0,5)==='layer' &amp;&amp; /* the matching substring isn't null =&gt; */ groups[group].getAttributeNS(null,&quot;id&quot;).substring(0,5) != null) {
+				var label = groups[group].getAttributeNS(&quot;http://www.inkscape.org/namespaces/inkscape&quot;,'label');
 				//alert('screen in '+filename+' and screen name is '+label);
-        			groups[group].setAttributeNS(null,"id",groups[group].getAttributeNS("http://www.inkscape.org/namespaces/inkscape",'label'));
+        			groups[group].setAttributeNS(null,&quot;id&quot;,groups[group].getAttributeNS(&quot;http://www.inkscape.org/namespaces/inkscape&quot;,'label'));
 				//alert('groups[group] is a '+groups[group]);
         			layers[label] = filename;
 				//alert('layers[label] for '+label+' is '+layers[label]);
@@ -167,7 +166,7 @@ function listAllFileNames() {
 function listAllScreenNames() {
   var screenstring = '';
   for (mockup in allScreenNames) {
-	screenstring = screenstring.concat(mockup+": "+allScreenNames[mockup]+", ");
+	screenstring = screenstring.concat(mockup+&quot;: &quot;+allScreenNames[mockup]+&quot;, &quot;);
   }
   alert(screenstring);
 }
@@ -193,7 +192,7 @@ function init() {
   filename = getFileName();
   visibleLayerId = 'screen-prerelease';
   // if there's a '#' character in the URL we're at ... use it as the target screen id
-  if (filename.indexOf('#') >= 0) {
+  if (filename.indexOf('#') &gt;= 0) {
    visibleLayerId = filename.slice(filename.indexOf('#')+1,filename.length+1);
   } 
  showLayerById(visibleLayerId);
@@ -201,7 +200,6 @@ function init() {
  //alert(getFileName());
 }
 
-]]>
 </script>
   <defs
      id="defs23899">
@@ -1329,19 +1327,19 @@ function init() {
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.91305163"
-     inkscape:cx="239.38399"
-     inkscape:cy="321.33692"
+     inkscape:cx="442.00123"
+     inkscape:cy="313.12271"
      inkscape:document-units="px"
-     inkscape:current-layer="layer17"
+     inkscape:current-layer="layer4"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1400"
-     inkscape:window-height="999"
-     inkscape:window-x="0"
-     inkscape:window-y="23"
+     inkscape:window-width="1436"
+     inkscape:window-height="856"
+     inkscape:window-x="4"
+     inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata23902">
@@ -1351,7 +1349,7 @@ function init() {
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -7371,7 +7369,7 @@ function init() {
          sodipodi:ry="2.5"
          sodipodi:rx="2.5"
          id="path32823"
-         d="m 52,342.5 a 2.5,2.5 0 1 1 -5,0 2.5,2.5 0 1 1 5,0 z"
+         d="m 52,342.5 c 0,1.38071 -1.119288,2.5 -2.5,2.5 -1.380712,0 -2.5,-1.11929 -2.5,-2.5 0,-1.38071 1.119288,-2.5 2.5,-2.5 1.380712,0 2.5,1.11929 2.5,2.5 z"
          sodipodi:type="arc"
          transform="translate(12,1475.4688)"
          sodipodi:cy="342.5" />
@@ -7422,7 +7420,7 @@ function init() {
          sodipodi:cy="342.5"
          transform="translate(12,1475.4688)"
          sodipodi:type="arc"
-         d="m 52,342.5 a 2.5,2.5 0 1 1 -5,0 2.5,2.5 0 1 1 5,0 z"
+         d="m 52,342.5 c 0,1.38071 -1.119288,2.5 -2.5,2.5 -1.380712,0 -2.5,-1.11929 -2.5,-2.5 0,-1.38071 1.119288,-2.5 2.5,-2.5 1.380712,0 2.5,1.11929 2.5,2.5 z"
          id="path32846"
          sodipodi:rx="2.5"
          sodipodi:ry="2.5"
@@ -7443,7 +7441,7 @@ function init() {
          sodipodi:cy="342.5"
          transform="translate(12,1475.4688)"
          sodipodi:type="arc"
-         d="m 52,342.5 a 2.5,2.5 0 1 1 -5,0 2.5,2.5 0 1 1 5,0 z"
+         d="m 52,342.5 c 0,1.38071 -1.119288,2.5 -2.5,2.5 -1.380712,0 -2.5,-1.11929 -2.5,-2.5 0,-1.38071 1.119288,-2.5 2.5,-2.5 1.380712,0 2.5,1.11929 2.5,2.5 z"
          id="path32852"
          sodipodi:rx="2.5"
          sodipodi:ry="2.5"
@@ -7992,8 +7990,7 @@ function init() {
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="screen-welcome"
-     style="display:none"
-     sodipodi:insensitive="true">
+     style="display:none">
     <rect
        transform="translate(25,-232.256)"
        ry="0"
@@ -8090,6 +8087,8 @@ function init() {
        onclick="nextScreen(evt,'screen-macuser')"
        transform="matrix(1.0000002,0,0,0.99964588,24.999916,-232.17367)"
        inkscape:label="#g79879879">
+      <desc
+         id="desc3264">next=screen-macuser</desc>
       <title
          id="title4589">button</title>
       <path
@@ -8116,6 +8115,8 @@ function init() {
        id="g5993"
        onclick="nextScreen(evt,'screen-gameover')"
        transform="matrix(1.0000002,0,0,0.99964588,24.999916,-232.17367)">
+      <desc
+         id="desc3262">next=screen-gameover</desc>
       <title
          id="title4591">button</title>
       <path
@@ -8214,7 +8215,7 @@ function init() {
        xml:space="preserve"
        transform="matrix(1.0001772,0,0,0.99982282,25,-232.256)"><tspan
          y="403.7829"
-         x="59.512974"
+         x="58.589653"
          sodipodi:role="line"
          id="tspan9615"
          style="text-align:center;text-anchor:middle;font-family:Architects Daughter;-inkscape-font-specification:Architects Daughter">Type-ahead </tspan><tspan
@@ -8633,7 +8634,8 @@ function init() {
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="screen-prerelease"
-     style="display:none">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <rect
        inkscape:label="#rect3796-0"
        inkscape:export-ydpi="90"
@@ -8838,7 +8840,7 @@ function init() {
          style="text-align:center;text-anchor:middle;font-family:Architects Daughter;-inkscape-font-specification:Architects Daughter"
          id="tspan44452"
          sodipodi:role="line"
-         x="84.508537"
+         x="83.585213"
          y="171.48572">Type-ahead </tspan><tspan
          id="tspan44454"
          style="text-align:center;text-anchor:middle;font-family:Architects Daughter;-inkscape-font-specification:Architects Daughter"
@@ -9117,6 +9119,8 @@ function init() {
        style="display:inline"
        id="g5987"
        onclick="nextScreen(evt,'screen-welcome')">
+      <desc
+         id="desc3258">next=screen-welcome</desc>
       <g
          id="g5964">
         <path
@@ -9144,6 +9148,8 @@ function init() {
        style="display:inline"
        id="g5982"
        onclick="nextScreen(evt,'screen-gameover')">
+      <desc
+         id="desc3260">next=screen-gameover</desc>
       <path
          sodipodi:nodetypes="ccccc"
          inkscape:connector-curvature="0"
