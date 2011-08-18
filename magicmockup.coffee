@@ -21,16 +21,29 @@ $ = @jQuery
       label = @getAttributeNS(inkNS, 'label')
       views[label] = @ if label
 
-    $doc.delegate 'g', 'click', (e) ->
-      actions = $(e.currentTarget).children('desc').text()
+    $doc
+      .delegate 'g', 'click', (e) ->
+        actions = $(e.currentTarget).children('desc').text()
 
-      return unless actions
+        return unless actions
 
-      for action in actions.split(/([\s\n]+)/)
-        #console.log $('g')
-        [command, id] = action.split(/\=/)
+        for action in actions.split(/([\s\n]+)/)
+          #console.log $('g')
+          [command, id] = action.split(/\=/)
 
-        _dispatch(command, id)
+          _dispatch(command, id)
+
+      .delegate 'g', 'hover', (e) ->
+        $this = $(this)
+
+        return if $this.data('hoverable')
+
+        actions = $(e.currentTarget).children('desc').text()
+
+        return unless actions
+
+        $this.css(cursor: 'pointer').data('hoverable', true)
+
 
 
   {init} # Public exports

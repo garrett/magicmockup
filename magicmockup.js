@@ -40,6 +40,19 @@
           _results.push(_dispatch(command, id));
         }
         return _results;
+      }).delegate('g', 'hover', function(e) {
+        var $this, actions;
+        $this = $(this);
+        if ($this.data('hoverable')) {
+          return;
+        }
+        actions = $(e.currentTarget).children('desc').text();
+        if (!actions) {
+          return;
+        }
+        return $this.css({
+          cursor: 'pointer'
+        }).data('hoverable', true);
       });
     };
     return {
