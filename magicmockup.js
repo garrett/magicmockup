@@ -6,16 +6,15 @@
     inkNS = 'http://www.inkscape.org/namespaces/inkscape';
     $doc = $(this.document);
     views = {};
-    _dispatch = function(command, id) {
+    _dispatch = function(context, command, id) {
       var act;
       act = {
         next: function() {
           var _base;
-          $('g').hide();
+          $(context).parents('g:visible').last().hide();
           return typeof (_base = $(views[id])).show === "function" ? _base.show() : void 0;
         }
       };
-      console.log([command, id], views, views[id]);
       return typeof act[command] === "function" ? act[command]() : void 0;
     };
     init = function() {
@@ -37,7 +36,7 @@
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           action = _ref[_i];
           _ref2 = action.split(/\=/), command = _ref2[0], id = _ref2[1];
-          _results.push(_dispatch(command, id));
+          _results.push(_dispatch(this, command, id));
         }
         return _results;
       }).delegate('g', 'hover', function(e) {

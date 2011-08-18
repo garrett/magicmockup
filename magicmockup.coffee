@@ -5,13 +5,14 @@ $ = @jQuery
   $doc = $(@document)
   views = {}
 
-  _dispatch = (command, id) ->
+  _dispatch = (context, command, id) ->
     act =
       next: ->
-        $('g').hide()
+        # Hide the current visible view
+        $(context).parents('g:visible').last().hide()
+        # Show the specified view
         $(views[id]).show?()
 
-    console.log [command, id], views, views[id]
     act[command]?()
 
 
@@ -28,10 +29,9 @@ $ = @jQuery
         return unless actions
 
         for action in actions.split(/([\s\n]+)/)
-          #console.log $('g')
           [command, id] = action.split(/\=/)
 
-          _dispatch(command, id)
+          _dispatch(@, command, id)
 
       .delegate 'g', 'hover', (e) ->
         $this = $(this)
