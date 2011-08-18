@@ -6,6 +6,8 @@ $ = @jQuery
   views = {}
 
 
+  # Do the heavy lifting
+  # (right now, there's only "next" for switching pages; more to come)
   _dispatch = (context, command, id) ->
     act =
       next: ->
@@ -17,6 +19,7 @@ $ = @jQuery
     act[command]?()
 
 
+  # Return the description for an element
   _getDescription = (el) ->
     $(el).children('desc').text()
 
@@ -32,6 +35,7 @@ $ = @jQuery
       .delegate 'g', 'click', (e) ->
         actions = _getDescription(e.currentTarget)
 
+        # Skip if there's no description
         return unless actions
 
         for action in actions.split(/([\s\n]+)/)
@@ -43,11 +47,10 @@ $ = @jQuery
       .delegate 'g', 'hover', (e) ->
         $this = $(this)
 
+        # Skip if already hoverable
         return if $this.data('hoverable')
-
-        actions = _getDescription(e.currentTarget)
-
-        return unless actions
+        # Skip if there's no description
+        return unless _getDescription(e.currentTarget)
 
         $this.css(cursor: 'pointer').data('hoverable', true)
 
@@ -59,5 +62,6 @@ $ = @jQuery
 @nextScreen = (e) ->
   #e.preventDefault()
 
+# init is called when the SVG document is loaded
 @init = ->
   magicmockup.init()

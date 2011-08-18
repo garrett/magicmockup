@@ -43,13 +43,12 @@
         }
         return _results;
       }).delegate('g', 'hover', function(e) {
-        var $this, actions;
+        var $this;
         $this = $(this);
         if ($this.data('hoverable')) {
           return;
         }
-        actions = _getDescription(e.currentTarget);
-        if (!actions) {
+        if (!_getDescription(e.currentTarget)) {
           return;
         }
         return $this.css({
