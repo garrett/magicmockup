@@ -2,7 +2,7 @@
   var $;
   $ = this.jQuery;
   this.magicmockup = (function() {
-    var $doc, init, inkNS, views, _dispatch;
+    var $doc, init, inkNS, views, _dispatch, _getDescription;
     inkNS = 'http://www.inkscape.org/namespaces/inkscape';
     $doc = $(this.document);
     views = {};
@@ -17,6 +17,9 @@
       };
       return typeof act[command] === "function" ? act[command]() : void 0;
     };
+    _getDescription = function(el) {
+      return $(el).children('desc').text();
+    };
     init = function() {
       $('g').each(function() {
         var label;
@@ -27,7 +30,7 @@
       });
       return $doc.delegate('g', 'click', function(e) {
         var action, actions, command, id, _i, _len, _ref, _ref2, _results;
-        actions = $(e.currentTarget).children('desc').text();
+        actions = _getDescription(e.currentTarget);
         if (!actions) {
           return;
         }
@@ -45,7 +48,7 @@
         if ($this.data('hoverable')) {
           return;
         }
-        actions = $(e.currentTarget).children('desc').text();
+        actions = _getDescription(e.currentTarget);
         if (!actions) {
           return;
         }

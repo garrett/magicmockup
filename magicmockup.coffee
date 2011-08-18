@@ -5,6 +5,7 @@ $ = @jQuery
   $doc = $(@document)
   views = {}
 
+
   _dispatch = (context, command, id) ->
     act =
       next: ->
@@ -16,6 +17,10 @@ $ = @jQuery
     act[command]?()
 
 
+  _getDescription = (el) ->
+    $(el).children('desc').text()
+
+
   init = ->
     # Propogate views
     $('g').each ->
@@ -23,8 +28,9 @@ $ = @jQuery
       views[label] = @ if label
 
     $doc
+      # Handle clicks on items with instructions
       .delegate 'g', 'click', (e) ->
-        actions = $(e.currentTarget).children('desc').text()
+        actions = _getDescription(e.currentTarget)
 
         return unless actions
 
@@ -33,17 +39,17 @@ $ = @jQuery
 
           _dispatch(@, command, id)
 
+      # Change the cursor for interactive elements
       .delegate 'g', 'hover', (e) ->
         $this = $(this)
 
         return if $this.data('hoverable')
 
-        actions = $(e.currentTarget).children('desc').text()
+        actions = _getDescription(e.currentTarget)
 
         return unless actions
 
         $this.css(cursor: 'pointer').data('hoverable', true)
-
 
 
   {init} # Public exports
