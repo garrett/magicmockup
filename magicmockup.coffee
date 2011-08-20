@@ -76,7 +76,6 @@ $ = @jQuery
 # Dummy function to handle the inline JS
 # (FIXME: The dummy JS should be removed from the SVG)
 @nextScreen = (e) ->
-#e.preventDefault()
 
-# init is called when the SVG document is loaded
-@init = magicmockup.init
+# Hack to attach the init to <svg/> for an unobtrusive SVG onload
+$('svg').attr onload: 'magicmockup.init()'

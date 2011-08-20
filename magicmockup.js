@@ -68,5 +68,7 @@
     };
   })();
   this.nextScreen = function(e) {};
-  this.init = magicmockup.init;
+  $('svg').attr({
+    onload: 'magicmockup.init()'
+  });
 }).call(this);
