@@ -24,7 +24,7 @@ $ = @jQuery
     $(el).children('desc').text()
 
 
-  init = ->
+  init = (loadEvent) ->
     # Propogate views
     $('g').each ->
       label = @getAttributeNS(inkNS, 'label')
@@ -61,8 +61,7 @@ $ = @jQuery
 # Dummy function to handle the inline JS
 # (FIXME: The dummy JS should be removed from the SVG)
 @nextScreen = (e) ->
-  #e.preventDefault()
+#e.preventDefault()
 
 # init is called when the SVG document is loaded
-@init = ->
-  magicmockup.init()
+@init = magicmockup.init

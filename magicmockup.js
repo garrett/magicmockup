@@ -20,7 +20,7 @@
     _getDescription = function(el) {
       return $(el).children('desc').text();
     };
-    init = function() {
+    init = function(loadEvent) {
       $('g').each(function() {
         var label;
         label = this.getAttributeNS(inkNS, 'label');
@@ -61,7 +61,5 @@
     };
   })();
   this.nextScreen = function(e) {};
-  this.init = function() {
-    return magicmockup.init();
-  };
+  this.init = magicmockup.init;
 }).call(this);
