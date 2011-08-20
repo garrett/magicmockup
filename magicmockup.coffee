@@ -12,7 +12,7 @@ $ = @jQuery
     act =
       next: ->
         # Hide the current visible view
-        $(context).parents('g:visible').last().hide()
+        $(context).parents('g').not('[style=display:none]').last().hide()
         # Show the specified view
         $(views[id]).show?()
 

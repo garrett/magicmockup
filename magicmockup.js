@@ -12,7 +12,7 @@
       act = {
         next: function() {
           var _base;
-          $(context).parents('g:visible').last().hide();
+          $(context).parents('g').not('[style=display:none]').last().hide();
           return typeof (_base = $(views[id])).show === "function" ? _base.show() : void 0;
         }
       };
