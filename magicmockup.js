@@ -2,7 +2,7 @@
   var $;
   $ = this.jQuery;
   this.magicmockup = (function() {
-    var $doc, init, inkNS, views, _addViews, _dispatch, _getDescription, _handleClick, _handleHover;
+    var $doc, init, inkNS, views, _addViews, _dispatch, _getDescription, _handleClick, _handleHover, _stripInlineJS;
     inkNS = 'http://www.inkscape.org/namespaces/inkscape';
     $doc = $(this.document);
     views = {};
@@ -56,8 +56,30 @@
     _getDescription = function(el) {
       return $(el).children('desc').text();
     };
+    _stripInlineJS = function() {
+      var $onclick;
+      $onclick = $('[onclick]');
+      if (!$onclick.length) {
+        return;
+      }
+      if (console && console.warn) {
+        if (typeof console.group === "function") {
+          console.group('Warning: inline JavaScript found (and deactivated)');
+        }
+        $onclick.each(function() {
+          return console.warn(this.id, ':', this.onclick);
+        });
+        if (typeof console.groupEnd === "function") {
+          console.groupEnd();
+        }
+      }
+      $onclick.each(function() {
+        return this.onclick = void 0;
+      });
+    };
     init = function(loadEvent) {
       _addViews($('g'));
+      _stripInlineJS();
       return $doc.delegate('g', {
         click: _handleClick,
         mouseover: _handleHover
@@ -67,7 +89,6 @@
       init: init
     };
   })();
-  this.nextScreen = function(e) {};
   $('svg').attr({
     onload: 'magicmockup.init()'
   });

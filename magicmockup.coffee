@@ -13,6 +13,7 @@ $ = @jQuery
       next: ->
         # Hide the current visible view
         $(context).parents('g').not('[style=display:none]').last().hide()
+
         # Show the specified view
         $(views[id]).show?()
 
@@ -24,6 +25,7 @@ $ = @jQuery
     $views.each ->
       label = @getAttributeNS(inkNS, 'label')
       views[label] = @ if label
+
     return
 
 
@@ -62,8 +64,28 @@ $ = @jQuery
     $(el).children('desc').text()
 
 
+  # If there's inline JS, strip it (and provide warnings)
+  _stripInlineJS = () ->
+    $onclick = $('[onclick]')
+
+    return unless $onclick.length
+
+    # Warn about inline JS (if console.warn is available)
+    if console and console.warn
+
+      console.group? 'Warning: inline JavaScript found (and deactivated)'
+      $onclick.each -> console.warn @id, ':', @onclick
+      console.groupEnd?()
+
+    # Strip the inline JS
+    $onclick.each -> @onclick = undefined
+
+    return
+
+
   init = (loadEvent) ->
     _addViews $('g')
+    _stripInlineJS()
 
     $doc.delegate 'g'
       click    : _handleClick
@@ -72,10 +94,6 @@ $ = @jQuery
 
   {init} # Public exports
 
-
-# Dummy function to handle the inline JS
-# (FIXME: The dummy JS should be removed from the SVG)
-@nextScreen = (e) ->
 
 # Hack to attach the init to <svg/> for an unobtrusive SVG onload
 $('svg').attr onload: 'magicmockup.init()'
