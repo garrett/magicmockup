@@ -95,7 +95,7 @@ $ = @jQuery
 
 
   # Make a layer visible
-  _viewLayer = (layer) ->
+  _showLayer = (layer) ->
     if typeof layer isnt 'string'
       layer = _getHash()
 
@@ -111,7 +111,7 @@ $ = @jQuery
     layer = _getHash()
 
     if layer
-      _viewLayer layer
+      _showLayer layer
 
 
   # Handle clicks on items with instructions
@@ -156,7 +156,7 @@ $ = @jQuery
     _findFilters()
     _stripInlineJS()
 
-    $(window).bind 'hashchange', _viewLayer
+    $(window).bind 'hashchange', _showLayer
 
     $doc.delegate 'g'
       click : _handleClick

@@ -2,7 +2,7 @@
   var $;
   $ = this.jQuery;
   this.magicmockup = (function() {
-    var $doc, defaultLayer, filter, init, layers, _dispatch, _findFilters, _getDescription, _getHash, _getInk, _handleClick, _handleHover, _hideLayers, _initLayers, _setInitialPage, _stripInlineJS, _viewLayer;
+    var $doc, defaultLayer, filter, init, layers, _dispatch, _findFilters, _getDescription, _getHash, _getInk, _handleClick, _handleHover, _hideLayers, _initLayers, _setInitialPage, _showLayer, _stripInlineJS;
     $doc = $(this.document);
     layers = {};
     filter = {};
@@ -96,7 +96,7 @@
       }
       return _results;
     };
-    _viewLayer = function(layer) {
+    _showLayer = function(layer) {
       if (typeof layer !== 'string') {
         layer = _getHash();
       }
@@ -110,7 +110,7 @@
       var layer;
       layer = _getHash();
       if (layer) {
-        return _viewLayer(layer);
+        return _showLayer(layer);
       }
     };
     _handleClick = function(e) {
@@ -150,7 +150,7 @@
       _setInitialPage();
       _findFilters();
       _stripInlineJS();
-      $(window).bind('hashchange', _viewLayer);
+      $(window).bind('hashchange', _showLayer);
       return $doc.delegate('g', {
         click: _handleClick,
         hover: _handleHover
