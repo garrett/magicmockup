@@ -2,36 +2,70 @@
   var $;
   $ = this.jQuery;
   this.magicmockup = (function() {
-    var $doc, filter, init, inkNS, views, _addViews, _dispatch, _findFilters, _getDescription, _handleClick, _handleHover, _stripInlineJS;
-    inkNS = 'http://www.inkscape.org/namespaces/inkscape';
+    var $doc, defaultLayer, filter, init, layers, _dispatch, _findFilters, _getDescription, _getHash, _getInk, _handleClick, _handleHover, _hideLayers, _initLayers, _setInitialPage, _setPage, _stripInlineJS;
     $doc = $(this.document);
-    views = {};
+    layers = {};
     filter = {};
+    defaultLayer = '';
+    _getInk = function(el, attr) {
+      var inkNS;
+      inkNS = 'http://www.inkscape.org/namespaces/inkscape';
+      return el.getAttributeNS(inkNS, attr);
+    };
     _findFilters = function() {
       return $doc.find('filter').each(function() {
         var label;
-        label = this.getAttributeNS(inkNS, 'label');
+        label = _getInk(this, 'label');
         return filter[label] = this.id;
       });
     };
+    _hideLayers = function() {
+      var layer, name, _results;
+      _results = [];
+      for (name in layers) {
+        layer = layers[name];
+        _results.push($(layer).hide());
+      }
+      return _results;
+    };
     _dispatch = function(context, _arg) {
-      var act, command, id;
-      command = _arg[0], id = _arg[1];
+      var act, command, val;
+      command = _arg[0], val = _arg[1];
       act = {
-        next: function() {
+        load: function(url) {
+          return window.location = url || val;
+        },
+        next: function(location) {
           var _base;
-          $(context).parents('g').not('[style=display:none]').last().hide();
-          return typeof (_base = $(views[id])).show === "function" ? _base.show() : void 0;
+          if (location.match(/#/)) {
+            return act.load(location);
+          } else {
+            $(context).parents('g').not('[style=display:none]').last().hide();
+            if (typeof (_base = $(layers[location])).show === "function") {
+              _base.show();
+            }
+            if (location === defaultLayer) {
+              location = '';
+            }
+            return window.location.hash = location;
+          }
         }
       };
-      return typeof act[command] === "function" ? act[command]() : void 0;
+      return typeof act[command] === "function" ? act[command](val) : void 0;
     };
-    _addViews = function($views) {
-      $views.each(function() {
-        var label;
-        label = this.getAttributeNS(inkNS, 'label');
-        if (label) {
-          return views[label] = this;
+    _initLayers = function($layers) {
+      if ($layers == null) {
+        $layers = $('g');
+      }
+      $layers.each(function() {
+        var group, label;
+        group = _getInk(this, 'groupmode');
+        label = _getInk(this, 'label');
+        if (group === 'layer') {
+          layers[label] = this;
+          if ($(this).is(':visible')) {
+            return defaultLayer = label;
+          }
         }
       });
     };
@@ -91,10 +125,29 @@
         return this.onclick = void 0;
       });
     };
+    _getHash = function() {
+      return window.location.hash.substr(1);
+    };
+    _setPage = function(layer) {
+      if (typeof layer !== 'string') {
+        layer = _getHash();
+      }
+      _hideLayers();
+      return _dispatch(this, ['next', layer || defaultLayer]);
+    };
+    _setInitialPage = function() {
+      var layer;
+      layer = _getHash();
+      if (layer) {
+        return _setPage(layer);
+      }
+    };
     init = function(loadEvent) {
+      _initLayers();
+      _setInitialPage();
       _findFilters();
-      _addViews($('g'));
       _stripInlineJS();
+      $(window).bind('hashchange', _setPage);
       return $doc.delegate('g', {
         click: _handleClick,
         hover: _handleHover

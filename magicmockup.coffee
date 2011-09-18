@@ -1,36 +1,63 @@
 $ = @jQuery
 
 @magicmockup = do ->
-  inkNS = 'http://www.inkscape.org/namespaces/inkscape'
   $doc = $(@document)
-  views = {}
+  layers = {}
   filter = {}
+  defaultLayer = ''
+
+
+  _getInk = (el, attr) ->
+    inkNS = 'http://www.inkscape.org/namespaces/inkscape'
+    el.getAttributeNS(inkNS, attr)
 
 
   _findFilters = ->
     $doc.find('filter').each ->
-      label = @getAttributeNS(inkNS, 'label')
+      label = _getInk(@, 'label')
       filter[label] = @id
+
+
+  _hideLayers = ->
+    for name, layer of layers
+      $(layer).hide()
+
 
   # Do the heavy lifting
   # (right now, there's only "next" for switching pages; more to come)
-  _dispatch = (context, [command, id]) ->
+  _dispatch = (context, [command, val]) ->
     act =
-      next: ->
-        # Hide the current visible view
-        $(context).parents('g').not('[style=display:none]').last().hide()
+      load: (url) ->
+        window.location = url || val
 
-        # Show the specified view
-        $(views[id]).show?()
+      next: (location) ->
+        if location.match /#/
+          # if "#" is added, then load the new page
+          act.load(location)
 
-    act[command]?()
+        else
+          # Hide the current visible layer
+          $(context).parents('g').not('[style=display:none]').last().hide()
+
+          # Show the specified layer
+          $(layers[location]).show?()
+
+          location = '' if location is defaultLayer
+
+          window.location.hash = location
+
+    act[command]?(val)
 
 
-  # Add each view to the view object (if it contains a an Inkscape label)
-  _addViews = ($views) ->
-    $views.each ->
-      label = @getAttributeNS(inkNS, 'label')
-      views[label] = @ if label
+  # Add each layer to the layer object (if it contains a an Inkscape label)
+  _initLayers = ($layers = $('g')) ->
+    $layers.each ->
+      group = _getInk(@, 'groupmode')
+      label = _getInk(@, 'label')
+
+      if group is 'layer'
+        layers[label] = @
+        defaultLayer = label if $(@).is(':visible')
 
     return
 
@@ -43,7 +70,7 @@ $ = @jQuery
     return unless actions
 
     for action in actions.split /([\s\n]+)/
-      _dispatch(@, action.split /\=/)
+      _dispatch @, action.split /\=/
 
     return
 
@@ -76,7 +103,7 @@ $ = @jQuery
 
 
   # If there's inline JS, strip it (and provide warnings)
-  _stripInlineJS = () ->
+  _stripInlineJS = ->
     $onclick = $('[onclick]')
 
     return unless $onclick.length
@@ -94,10 +121,32 @@ $ = @jQuery
     return
 
 
+  _getHash = ->
+    window.location.hash.substr(1)
+
+
+  _setPage = (layer) ->
+    if typeof layer isnt 'string'
+      layer = _getHash()
+
+    _hideLayers()
+    _dispatch @, ['next', layer or defaultLayer]
+
+
+  _setInitialPage = ->
+    layer = _getHash()
+
+    if layer
+      _setPage layer
+
+
   init = (loadEvent) ->
+    _initLayers()
+    _setInitialPage()
     _findFilters()
-    _addViews $('g')
     _stripInlineJS()
+
+    $(window).bind 'hashchange', _setPage
 
     $doc.delegate 'g'
       click : _handleClick
