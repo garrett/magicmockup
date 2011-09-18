@@ -2,10 +2,18 @@
   var $;
   $ = this.jQuery;
   this.magicmockup = (function() {
-    var $doc, init, inkNS, views, _addViews, _dispatch, _getDescription, _handleClick, _handleHover, _stripInlineJS;
+    var $doc, filter, init, inkNS, views, _addViews, _dispatch, _findFilters, _getDescription, _handleClick, _handleHover, _stripInlineJS;
     inkNS = 'http://www.inkscape.org/namespaces/inkscape';
     $doc = $(this.document);
     views = {};
+    filter = {};
+    _findFilters = function() {
+      return $doc.find('filter').each(function() {
+        var label;
+        label = this.getAttributeNS(inkNS, 'label');
+        return filter[label] = this.id;
+      });
+    };
     _dispatch = function(context, _arg) {
       var act, command, id;
       command = _arg[0], id = _arg[1];
@@ -40,16 +48,22 @@
       }
     };
     _handleHover = function(e) {
-      var $this;
+      var $this, hover, isHovered;
       $this = $(this);
-      if ($this.data('hoverable')) {
-        return;
-      }
-      $this.data('hoverable', true);
+      isHovered = e.type === "mouseenter";
       if (!_getDescription(e.currentTarget)) {
         return;
       }
-      $this.css({
+      if (filter.hover) {
+        hover = isHovered ? "url(#" + filter.hover + ")" : "none";
+        $this.css({
+          filter: hover
+        });
+      }
+      if ($this.data('hoverable')) {
+        return;
+      }
+      $this.data('hoverable', true).css({
         cursor: 'pointer'
       });
     };
@@ -78,11 +92,12 @@
       });
     };
     init = function(loadEvent) {
+      _findFilters();
       _addViews($('g'));
       _stripInlineJS();
       return $doc.delegate('g', {
         click: _handleClick,
-        mouseover: _handleHover
+        hover: _handleHover
       });
     };
     return {

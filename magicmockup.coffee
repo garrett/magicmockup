@@ -4,7 +4,13 @@ $ = @jQuery
   inkNS = 'http://www.inkscape.org/namespaces/inkscape'
   $doc = $(@document)
   views = {}
+  filter = {}
 
+
+  _findFilters = ->
+    $doc.find('filter').each ->
+      label = @getAttributeNS(inkNS, 'label')
+      filter[label] = @id
 
   # Do the heavy lifting
   # (right now, there's only "next" for switching pages; more to come)
@@ -45,17 +51,22 @@ $ = @jQuery
   # Change the cursor for interactive elements
   _handleHover = (e) ->
     $this = $(this)
+    isHovered = e.type is "mouseenter"
+
+    # Skip if there's no description
+    return unless _getDescription(e.currentTarget)
+
+    # Alter hover CSS if there's a hover filter
+    if filter.hover
+      hover = if isHovered then "url(##{filter.hover})" else "none"
+      $this.css filter: hover
 
     # Skip if already hoverable
     return if $this.data('hoverable')
 
     # We're handling the hoverable state now
-    $this.data('hoverable', true)
+    $this.data('hoverable', true).css(cursor: 'pointer')
 
-    # Skip if there's no description
-    return unless _getDescription(e.currentTarget)
-
-    $this.css(cursor: 'pointer')
     return
 
 
@@ -84,12 +95,13 @@ $ = @jQuery
 
 
   init = (loadEvent) ->
+    _findFilters()
     _addViews $('g')
     _stripInlineJS()
 
     $doc.delegate 'g'
-      click    : _handleClick
-      mouseover: _handleHover
+      click : _handleClick
+      hover : _handleHover
 
 
   {init} # Public exports
