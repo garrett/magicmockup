@@ -21,11 +21,11 @@
    inkscape:export-ydpi="90"
    style="display:inline">
   <script
-     xlink:href="jquery.js"
+     xlink:href="../jquery.js"
      type="text/ecmascript"
      id="script8213" />
   <script
-     xlink:href="magicmockup.js"
+     xlink:href="../magicmockup.js"
      type="text/ecmascript"
      id="script8215" />
   <defs
