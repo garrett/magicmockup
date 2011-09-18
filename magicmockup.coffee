@@ -7,20 +7,30 @@ $ = @jQuery
   defaultLayer = ''
 
 
+  # Convenience function to grab attributes from the Inkscape namespace
   _getInk = (el, attr) ->
     inkNS = 'http://www.inkscape.org/namespaces/inkscape'
     el.getAttributeNS(inkNS, attr)
 
 
+  # Add each layer to the layer object (if it contains a an Inkscape label)
+  _initLayers = ($layers = $('g')) ->
+    $layers.each ->
+      group = _getInk(@, 'groupmode')
+      label = _getInk(@, 'label')
+
+      if group is 'layer'
+        layers[label] = @
+        defaultLayer = label if $(@).is(':visible')
+
+    return
+
+
+  # Find all filters and store in the filter object
   _findFilters = ->
     $doc.find('filter').each ->
       label = _getInk(@, 'label')
       filter[label] = @id
-
-
-  _hideLayers = ->
-    for name, layer of layers
-      $(layer).hide()
 
 
   # Do the heavy lifting
@@ -49,17 +59,59 @@ $ = @jQuery
     act[command]?(val)
 
 
-  # Add each layer to the layer object (if it contains a an Inkscape label)
-  _initLayers = ($layers = $('g')) ->
-    $layers.each ->
-      group = _getInk(@, 'groupmode')
-      label = _getInk(@, 'label')
+  # Return the description for an element
+  _getDescription = (el) ->
+    $(el).children('desc').text()
 
-      if group is 'layer'
-        layers[label] = @
-        defaultLayer = label if $(@).is(':visible')
+
+  # If there's inline JS, strip it (and provide warnings)
+  _stripInlineJS = ->
+    $onclick = $('[onclick]')
+
+    return unless $onclick.length
+
+    # Warn about inline JS (if console.warn is available)
+    if console and console.warn
+
+      console.group? 'Warning: inline JavaScript found (and deactivated)'
+      $onclick.each -> console.warn @id, ':', @onclick
+      console.groupEnd?()
+
+    # Strip the inline JS
+    $onclick.each -> @onclick = undefined
 
     return
+
+
+  # Return the URL fragment
+  _getHash = ->
+    window.location.hash.substr(1)
+
+
+  # Hide all layers
+  _hideLayers = ->
+    for name, layer of layers
+      $(layer).hide()
+
+
+  # Make a layer visible
+  _viewLayer = (layer) ->
+    if typeof layer isnt 'string'
+      layer = _getHash()
+
+    # Make sure the layer exists
+    return unless layers[layer] or layer is ''
+
+    _hideLayers()
+    _dispatch @, ['next', layer or defaultLayer]
+
+
+  # If a hash is specified, view the appropriate layer
+  _setInitialPage = ->
+    layer = _getHash()
+
+    if layer
+      _viewLayer layer
 
 
   # Handle clicks on items with instructions
@@ -97,56 +149,14 @@ $ = @jQuery
     return
 
 
-  # Return the description for an element
-  _getDescription = (el) ->
-    $(el).children('desc').text()
-
-
-  # If there's inline JS, strip it (and provide warnings)
-  _stripInlineJS = ->
-    $onclick = $('[onclick]')
-
-    return unless $onclick.length
-
-    # Warn about inline JS (if console.warn is available)
-    if console and console.warn
-
-      console.group? 'Warning: inline JavaScript found (and deactivated)'
-      $onclick.each -> console.warn @id, ':', @onclick
-      console.groupEnd?()
-
-    # Strip the inline JS
-    $onclick.each -> @onclick = undefined
-
-    return
-
-
-  _getHash = ->
-    window.location.hash.substr(1)
-
-
-  _setPage = (layer) ->
-    if typeof layer isnt 'string'
-      layer = _getHash()
-
-    _hideLayers()
-    _dispatch @, ['next', layer or defaultLayer]
-
-
-  _setInitialPage = ->
-    layer = _getHash()
-
-    if layer
-      _setPage layer
-
-
+  # Run on page load
   init = (loadEvent) ->
     _initLayers()
     _setInitialPage()
     _findFilters()
     _stripInlineJS()
 
-    $(window).bind 'hashchange', _setPage
+    $(window).bind 'hashchange', _viewLayer
 
     $doc.delegate 'g'
       click : _handleClick

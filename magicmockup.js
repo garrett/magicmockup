@@ -2,7 +2,7 @@
   var $;
   $ = this.jQuery;
   this.magicmockup = (function() {
-    var $doc, defaultLayer, filter, init, layers, _dispatch, _findFilters, _getDescription, _getHash, _getInk, _handleClick, _handleHover, _hideLayers, _initLayers, _setInitialPage, _setPage, _stripInlineJS;
+    var $doc, defaultLayer, filter, init, layers, _dispatch, _findFilters, _getDescription, _getHash, _getInk, _handleClick, _handleHover, _hideLayers, _initLayers, _setInitialPage, _stripInlineJS, _viewLayer;
     $doc = $(this.document);
     layers = {};
     filter = {};
@@ -12,21 +12,28 @@
       inkNS = 'http://www.inkscape.org/namespaces/inkscape';
       return el.getAttributeNS(inkNS, attr);
     };
+    _initLayers = function($layers) {
+      if ($layers == null) {
+        $layers = $('g');
+      }
+      $layers.each(function() {
+        var group, label;
+        group = _getInk(this, 'groupmode');
+        label = _getInk(this, 'label');
+        if (group === 'layer') {
+          layers[label] = this;
+          if ($(this).is(':visible')) {
+            return defaultLayer = label;
+          }
+        }
+      });
+    };
     _findFilters = function() {
       return $doc.find('filter').each(function() {
         var label;
         label = _getInk(this, 'label');
         return filter[label] = this.id;
       });
-    };
-    _hideLayers = function() {
-      var layer, name, _results;
-      _results = [];
-      for (name in layers) {
-        layer = layers[name];
-        _results.push($(layer).hide());
-      }
-      return _results;
     };
     _dispatch = function(context, _arg) {
       var act, command, val;
@@ -53,21 +60,58 @@
       };
       return typeof act[command] === "function" ? act[command](val) : void 0;
     };
-    _initLayers = function($layers) {
-      if ($layers == null) {
-        $layers = $('g');
+    _getDescription = function(el) {
+      return $(el).children('desc').text();
+    };
+    _stripInlineJS = function() {
+      var $onclick;
+      $onclick = $('[onclick]');
+      if (!$onclick.length) {
+        return;
       }
-      $layers.each(function() {
-        var group, label;
-        group = _getInk(this, 'groupmode');
-        label = _getInk(this, 'label');
-        if (group === 'layer') {
-          layers[label] = this;
-          if ($(this).is(':visible')) {
-            return defaultLayer = label;
-          }
+      if (console && console.warn) {
+        if (typeof console.group === "function") {
+          console.group('Warning: inline JavaScript found (and deactivated)');
         }
+        $onclick.each(function() {
+          return console.warn(this.id, ':', this.onclick);
+        });
+        if (typeof console.groupEnd === "function") {
+          console.groupEnd();
+        }
+      }
+      $onclick.each(function() {
+        return this.onclick = void 0;
       });
+    };
+    _getHash = function() {
+      return window.location.hash.substr(1);
+    };
+    _hideLayers = function() {
+      var layer, name, _results;
+      _results = [];
+      for (name in layers) {
+        layer = layers[name];
+        _results.push($(layer).hide());
+      }
+      return _results;
+    };
+    _viewLayer = function(layer) {
+      if (typeof layer !== 'string') {
+        layer = _getHash();
+      }
+      if (!(layers[layer] || layer === '')) {
+        return;
+      }
+      _hideLayers();
+      return _dispatch(this, ['next', layer || defaultLayer]);
+    };
+    _setInitialPage = function() {
+      var layer;
+      layer = _getHash();
+      if (layer) {
+        return _viewLayer(layer);
+      }
     };
     _handleClick = function(e) {
       var action, actions, _i, _len, _ref;
@@ -101,53 +145,12 @@
         cursor: 'pointer'
       });
     };
-    _getDescription = function(el) {
-      return $(el).children('desc').text();
-    };
-    _stripInlineJS = function() {
-      var $onclick;
-      $onclick = $('[onclick]');
-      if (!$onclick.length) {
-        return;
-      }
-      if (console && console.warn) {
-        if (typeof console.group === "function") {
-          console.group('Warning: inline JavaScript found (and deactivated)');
-        }
-        $onclick.each(function() {
-          return console.warn(this.id, ':', this.onclick);
-        });
-        if (typeof console.groupEnd === "function") {
-          console.groupEnd();
-        }
-      }
-      $onclick.each(function() {
-        return this.onclick = void 0;
-      });
-    };
-    _getHash = function() {
-      return window.location.hash.substr(1);
-    };
-    _setPage = function(layer) {
-      if (typeof layer !== 'string') {
-        layer = _getHash();
-      }
-      _hideLayers();
-      return _dispatch(this, ['next', layer || defaultLayer]);
-    };
-    _setInitialPage = function() {
-      var layer;
-      layer = _getHash();
-      if (layer) {
-        return _setPage(layer);
-      }
-    };
     init = function(loadEvent) {
       _initLayers();
       _setInitialPage();
       _findFilters();
       _stripInlineJS();
-      $(window).bind('hashchange', _setPage);
+      $(window).bind('hashchange', _viewLayer);
       return $doc.delegate('g', {
         click: _handleClick,
         hover: _handleHover
