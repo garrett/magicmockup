@@ -10,7 +10,7 @@ This is currently a work-in-progress, but it's starting to work! (:
 ## Getting Started
 
 To use MagicMockup, simply include the following JavaScript in 
-your SVG file (directly between the <svg> and <def> tags):
+your SVG file (directly between the `<svg>` and `<def>` tags):
 
     <script xlink:href="jquery.js" type="text/ecmascript"/>
     <script xlink:href="magicmockup.js" type="text/ecmascript"/>
@@ -23,17 +23,21 @@ layer and give the layer an id. For the clickable shape, add
 some directives in the object properties dialog inside of the
 "Description" entry.
 
-Right now, we only support `next=some-id-here` for hiding the
-visible layers and showing the specified layer. Add this directive
-to the "Description" entry and you're using MagicMockup (if you
-also included the appropriate JS lines above).
+You invoke a directive as `directive=layerName`, e.g. `next=Layer2`.
+You can add multiple directives by putting each directive on a new line.
 
-With this one directive, you can make interactive mockups! Also,
+We currently support the following directives:
+
+* next: Show only the specified layer
+* show: Show the specified layer
+* hide: Hide the specified layer
+* toggle: Toggle the specified layer
+ 
+Now, you can make interactive mockups! Also,
 clickable areas (buttons, etc.) are indicated by a mouse pointer.
 
 More directives are planned. Stay tuned! We're planning
 on adding inter-document linking as well.
-
 
 ## Developing
 
