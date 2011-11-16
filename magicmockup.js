@@ -56,6 +56,15 @@
             }
             return window.location.hash = location;
           }
+        },
+        show: function(layer) {
+          return $(layers[layer]).show();
+        },
+        hide: function(layer) {
+          return $(layers[layer]).hide();
+        },
+        toggle: function(layer) {
+          return $(layers[layer]).toggle();
         }
       };
       return typeof act[command] === "function" ? act[command](val) : void 0;

@@ -55,6 +55,15 @@ $ = @jQuery
           location = '' if location is defaultLayer
 
           window.location.hash = location
+      
+      show: (layer) ->
+        $(layers[layer]).show()
+
+      hide: (layer) ->
+        $(layers[layer]).hide()
+
+      toggle: (layer) ->
+        $(layers[layer]).toggle()
 
     act[command]?(val)
 
