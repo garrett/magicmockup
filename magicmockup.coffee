@@ -70,6 +70,18 @@ $ = @jQuery
         for layer in toggle_layers
           $(layers[layer]).toggle()
 
+      fadeOut: (params) ->
+        if params? and params.length > 0
+          # Capture parameters with defaults
+          layer = params[0]
+          time = params[1] ? 1
+          easing = params[2] ? 'linear'
+          # Convert time from seconds to milliseconds
+          time = parseInt(time) * 1000
+          $(layers[layer]).animate svgOpacity: 0.0, time, easing, () ->
+            # Reset opacity but hide 
+            $(this).hide().attr 'opacity', 1
+
     params = val?.split ','
     act[command]?(params)
 

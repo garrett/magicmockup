@@ -81,6 +81,20 @@
             _results.push($(layers[layer]).toggle());
           }
           return _results;
+        },
+        fadeOut: function(params) {
+          var easing, layer, time, _ref, _ref2;
+          if ((params != null) && params.length > 0) {
+            layer = params[0];
+            time = (_ref = params[1]) != null ? _ref : 1;
+            easing = (_ref2 = params[2]) != null ? _ref2 : 'linear';
+            time = parseInt(time) * 1000;
+            return $(layers[layer]).animate({
+              svgOpacity: 0.0
+            }, time, easing, function() {
+              return $(this).hide().attr('opacity', 1);
+            });
+          }
         }
       };
       params = val != null ? val.split(',') : void 0;
