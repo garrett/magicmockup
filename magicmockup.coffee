@@ -38,9 +38,11 @@ $ = @jQuery
   _dispatch = (context, [command, val]) ->
     act =
       load: (url) ->
+        url = url.shift()
         window.location = url || val
 
       next: (location) ->
+        location = location.shift()
         if location.match /#/
           # if "#" is added, then load the new page
           act.load(location)
@@ -56,16 +58,20 @@ $ = @jQuery
 
           window.location.hash = location
       
-      show: (layer) ->
-        $(layers[layer]).show()
+      show: (show_layers) ->
+        for layer in show_layers
+          $(layers[layer]).show()
 
-      hide: (layer) ->
-        $(layers[layer]).hide()
+      hide: (hide_layers) ->
+        for layer in hide_layers
+          $(layers[layer]).hide()
 
-      toggle: (layer) ->
-        $(layers[layer]).toggle()
+      toggle: (toggle_layers) ->
+        for layer in toggle_layers
+          $(layers[layer]).toggle()
 
-    act[command]?(val)
+    params = val?.split ','
+    act[command]?(params)
 
 
   # Return the description for an element
