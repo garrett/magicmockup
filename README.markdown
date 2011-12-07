@@ -78,3 +78,7 @@ http://ietherpad.com/g6KdUcpNIH
 ## Authors
 * Máirín Duffy
 * Garrett LeSage
+
+## Credits
+* jQuery (jquery.com)
+* jQuery SVG plugin by Keith Wood (http://keith-wood.name/svg.html)
