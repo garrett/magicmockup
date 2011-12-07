@@ -78,7 +78,9 @@ $ = @jQuery
           easing = params[2] ? 'linear'
           # Convert time from seconds to milliseconds
           time = parseInt(time) * 1000
-          $(layers[layer]).animate svgOpacity: 0.0, time, easing, () ->
+          $(layers[layer])
+            .attr('opacity', 1)
+            .animate svgOpacity: 0.0, time, easing, () ->
             # Reset opacity but hide 
             $(this).hide().attr 'opacity', 1
 
