@@ -38,9 +38,11 @@ $ = @jQuery
   _dispatch = (context, [command, val]) ->
     act =
       load: (url) ->
+        url = url.shift()
         window.location = url || val
 
       next: (location) ->
+        location = location.shift()
         if location.match /#/
           # if "#" is added, then load the new page
           act.load(location)
@@ -56,16 +58,34 @@ $ = @jQuery
 
           window.location.hash = location
       
-      show: (layer) ->
-        $(layers[layer]).show()
+      show: (show_layers) ->
+        for layer in show_layers
+          $(layers[layer]).show()
 
-      hide: (layer) ->
-        $(layers[layer]).hide()
+      hide: (hide_layers) ->
+        for layer in hide_layers
+          $(layers[layer]).hide()
 
-      toggle: (layer) ->
-        $(layers[layer]).toggle()
+      toggle: (toggle_layers) ->
+        for layer in toggle_layers
+          $(layers[layer]).toggle()
 
-    act[command]?(val)
+      fadeOut: (params) ->
+        if params? and params.length > 0
+          # Capture parameters with defaults
+          layer = params[0]
+          time = params[1] ? 1
+          easing = params[2] ? 'linear'
+          # Convert time from seconds to milliseconds
+          time = parseInt(time) * 1000
+          $(layers[layer])
+            .attr('opacity', 1)
+            .animate svgOpacity: 0.0, time, easing, () ->
+            # Reset opacity but hide 
+            $(this).hide().attr 'opacity', 1
+
+    params = val?.split ','
+    act[command]?(params)
 
 
   # Return the description for an element
