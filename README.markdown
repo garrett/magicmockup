@@ -14,6 +14,13 @@ your SVG file (directly between the `<svg>` and `<def>` tags):
 
     <script xlink:href="magicmockup.js" type="text/ecmascript"/>
 
+If you're using Inkscape 0.48, you can add MagicMockup right in
+Inkscape:
+ 1. Go to File > Document Properties...
+ 1. Click on the Scripting tab
+ 1. Enter the path to magicmockup.js in the textbox and click Add
+ 1. You'll see magicmockup.js added to the list of scripts
+
 Inkscape plays nicely with the script tags, so you only have to
 add it once per file, and you can save as much as you want.
 
@@ -38,6 +45,15 @@ clickable areas (buttons, etc.) are indicated by a mouse pointer.
 
 More directives are planned. Stay tuned! We're planning
 on adding inter-document linking as well.
+
+## Inkscape template
+For your convenience, we've added InteractiveMockup.svg to use as an Inkscape template file. It has the magicmockup.js script tag already included.
+
+To use it, copy the file to the templates folder in your Inkscape user directory.
+* on Linux/Mac, it's ./config/inkscape/templates/
+* on Windows, it's %APPDATA%\\Inkscape\templates\
+
+Then, when you open Inkscape, go to File > New, and choose InteractiveMockup from the list of presets.
 
 ## Developing
 
