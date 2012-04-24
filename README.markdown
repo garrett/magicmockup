@@ -16,10 +16,10 @@ your SVG file (directly between the `<svg>` and `<def>` tags):
 
 If you're using Inkscape 0.48, you can add MagicMockup right in
 Inkscape:
- # Go to File > Document Properties...
- # Click on the Scripting tab
- # Enter the path to magicmockup.js in the textbox and click Add
- # You'll see magicmockup.js added to the list of scripts
+ 1. Go to File > Document Properties...
+ 1. Click on the Scripting tab
+ 1. Enter the path to magicmockup.js in the textbox and click Add
+ 1. You'll see magicmockup.js added to the list of scripts
 
 Inkscape plays nicely with the script tags, so you only have to
 add it once per file, and you can save as much as you want.
