@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="800" height="600" onload="magicmockup.init()">
+  <script xlink:href="../magicmockup.js"/>
+  <g inkscape:label="main" inkscape:groupmode="layer" style="display: inline;">
+    <rect x="200" y="100" height="200" width="300" style="fill:#729fcf"/>
+    <g style="cursor: pointer;">
+      <desc>next=inlink</desc>
+      <rect x="100" y="150" width="150" height="60" style="fill:#ff0000"/>
+      <text x="120" y="180">jump!</text>
+    </g>
+  </g>
+  <g inkscape:label="inlink" inkscape:groupmode="layer" style="display: none;">
+    <g style="cursor: pointer;">
+      <desc>next=main</desc>
+      <rect x="300" y="200" width="200" height="100" style="fill:#babdb6"/>
+      <text x="320" y="240">back!</text>
+    </g>
+  </g>
+</svg>
