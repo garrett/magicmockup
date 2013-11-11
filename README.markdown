@@ -87,9 +87,6 @@ although any web server would work).
 * Animations
 * External directive file (possibly)
 
-More details in our EtherPad discussion:
-http://ietherpad.com/g6KdUcpNIH
-
 
 ## Authors
 * Máirín Duffy
