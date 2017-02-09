@@ -1,4 +1,4 @@
-# MagicMarkup
+# MagicMockup
 
 ## About
 
