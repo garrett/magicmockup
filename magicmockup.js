@@ -9282,34 +9282,39 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
    Dual licensed under the GPL (http://dev.jquery.com/browser/trunk/jquery/GPL-LICENSE.txt) and 
    MIT (http://dev.jquery.com/browser/trunk/jquery/MIT-LICENSE.txt) licenses. 
    Please attribute the author if you use it. */
-(function($){$.fn.addClass=function(e){return function(d){d=d||'';return this.each(function(){if($.svg.isSVGElem(this)){var c=this;$.each(d.split(/\s+/),function(i,a){var b=(c.className?c.className.baseVal:c.getAttribute('class'));if($.inArray(a,b.split(/\s+/))==-1){b+=(b?' ':'')+a;(c.className?c.className.baseVal=b:c.setAttribute('class',b))}})}else{e.apply($(this),[d])}})}}($.fn.addClass);$.fn.removeClass=function(e){return function(d){d=d||'';return this.each(function(){if($.svg.isSVGElem(this)){var c=this;$.each(d.split(/\s+/),function(i,a){var b=(c.className?c.className.baseVal:c.getAttribute('class'));b=$.grep(b.split(/\s+/),function(n,i){return n!=a}).join(' ');(c.className?c.className.baseVal=b:c.setAttribute('class',b))})}else{e.apply($(this),[d])}})}}($.fn.removeClass);$.fn.toggleClass=function(c){return function(a,b){return this.each(function(){if($.svg.isSVGElem(this)){if(typeof b!=='boolean'){b=!$(this).hasClass(a)}$(this)[(b?'add':'remove')+'Class'](a)}else{c.apply($(this),[a,b])}})}}($.fn.toggleClass);$.fn.hasClass=function(d){return function(b){b=b||'';var c=false;this.each(function(){if($.svg.isSVGElem(this)){var a=(this.className?this.className.baseVal:this.getAttribute('class')).split(/\s+/);c=($.inArray(b,a)>-1)}else{c=(d.apply($(this),[b]))}return!c});return c}}($.fn.hasClass);$.fn.attr=function(h){return function(b,c,d){if(typeof b==='string'&&c===undefined){var e=h.apply(this,[b,c,d]);if(e&&e.baseVal&&e.baseVal.numberOfItems!=null){c='';e=e.baseVal;if(b=='transform'){for(var i=0;i<e.numberOfItems;i++){var f=e.getItem(i);switch(f.type){case 1:c+=' matrix('+f.matrix.a+','+f.matrix.b+','+f.matrix.c+','+f.matrix.d+','+f.matrix.e+','+f.matrix.f+')';break;case 2:c+=' translate('+f.matrix.e+','+f.matrix.f+')';break;case 3:c+=' scale('+f.matrix.a+','+f.matrix.d+')';break;case 4:c+=' rotate('+f.angle+')';break;case 5:c+=' skewX('+f.angle+')';break;case 6:c+=' skewY('+f.angle+')';break}}e=c.substring(1)}else{e=e.getItem(0).valueAsString}}return(e&&e.baseVal?e.baseVal.valueAsString:e)}var g=b;if(typeof b==='string'){g={};g[b]=c}return this.each(function(){if($.svg.isSVGElem(this)){for(var n in g){var a=($.isFunction(g[n])?g[n]():g[n]);(d?this.style[n]=a:this.setAttribute(n,a))}}else{h.apply($(this),[b,c,d])}})}}($.fn.attr);$.fn.removeAttr=function(b){return function(a){return this.each(function(){if($.svg.isSVGElem(this)){(this[a]&&this[a].baseVal?this[a].baseVal.value='':this.setAttribute(a,''))}else{b.apply($(this),[a])}})}}($.fn.removeAttr);$.extend($.cssNumber,{'stopOpacity':true,'strokeMitrelimit':true,'strokeOpacity':true});if($.cssProps){$.css=function(d){return function(a,b){var c=(b.match(/^svg.*/)?$(a).attr($.cssProps[b]||b):'');return c||d(a,b)}}($.css)}function anySVG(a){for(var i=0;i<a.length;i++){if(a[i].nodeType==1&&a[i].namespaceURI==$.svg.svgNS){return true}}return false}$.expr.relative['+']=function(d){return function(a,b,c){d(a,b,c||anySVG(a))}}($.expr.relative['+']);$.expr.relative['>']=function(d){return function(a,b,c){d(a,b,c||anySVG(a))}}($.expr.relative['>']);$.expr.relative['']=function(d){return function(a,b,c){d(a,b,c||anySVG(a))}}($.expr.relative['']);$.expr.relative['~']=function(d){return function(a,b,c){d(a,b,c||anySVG(a))}}($.expr.relative['~']);$.expr.find.ID=function(d){return function(a,b,c){return($.svg.isSVGElem(b)?[b.ownerDocument.getElementById(a[1])]:d(a,b,c))}}($.expr.find.ID);var j=document.createElement('div');j.appendChild(document.createComment(''));if(j.getElementsByTagName('*').length>0){$.expr.find.TAG=function(a,b){var c=b.getElementsByTagName(a[1]);if(a[1]==='*'){var d=[];for(var i=0;c[i]||c.item(i);i++){if((c[i]||c.item(i)).nodeType===1){d.push(c[i]||c.item(i))}}c=d}return c}}$.expr.preFilter.CLASS=function(a,b,c,d,f,g){a=' '+a[1].replace(/\\/g,'')+' ';if(g){return a}for(var i=0,elem={};elem!=null;i++){elem=b[i];if(!elem){try{elem=b.item(i)}catch(e){}}if(elem){var h=(!$.svg.isSVGElem(elem)?elem.className:(elem.className?elem.className.baseVal:'')||elem.getAttribute('class'));if(f^(h&&(' '+h+' ').indexOf(a)>-1)){if(!c)d.push(elem)}else if(c){b[i]=false}}}return false};$.expr.filter.CLASS=function(a,b){var c=(!$.svg.isSVGElem(a)?a.className:(a.className?a.className.baseVal:a.getAttribute('class')));return(' '+c+' ').indexOf(b)>-1};$.expr.filter.ATTR=function(g){return function(c,d){var e=null;if($.svg.isSVGElem(c)){e=d[1];$.expr.attrHandle[e]=function(a){var b=a.getAttribute(e);return b&&b.baseVal||b}}var f=g(c,d);if(e){$.expr.attrHandle[e]=null}return f}}($.expr.filter.ATTR)})(jQuery);(function() {
+(function($){$.fn.addClass=function(e){return function(d){d=d||'';return this.each(function(){if($.svg.isSVGElem(this)){var c=this;$.each(d.split(/\s+/),function(i,a){var b=(c.className?c.className.baseVal:c.getAttribute('class'));if($.inArray(a,b.split(/\s+/))==-1){b+=(b?' ':'')+a;(c.className?c.className.baseVal=b:c.setAttribute('class',b))}})}else{e.apply($(this),[d])}})}}($.fn.addClass);$.fn.removeClass=function(e){return function(d){d=d||'';return this.each(function(){if($.svg.isSVGElem(this)){var c=this;$.each(d.split(/\s+/),function(i,a){var b=(c.className?c.className.baseVal:c.getAttribute('class'));b=$.grep(b.split(/\s+/),function(n,i){return n!=a}).join(' ');(c.className?c.className.baseVal=b:c.setAttribute('class',b))})}else{e.apply($(this),[d])}})}}($.fn.removeClass);$.fn.toggleClass=function(c){return function(a,b){return this.each(function(){if($.svg.isSVGElem(this)){if(typeof b!=='boolean'){b=!$(this).hasClass(a)}$(this)[(b?'add':'remove')+'Class'](a)}else{c.apply($(this),[a,b])}})}}($.fn.toggleClass);$.fn.hasClass=function(d){return function(b){b=b||'';var c=false;this.each(function(){if($.svg.isSVGElem(this)){var a=(this.className?this.className.baseVal:this.getAttribute('class')).split(/\s+/);c=($.inArray(b,a)>-1)}else{c=(d.apply($(this),[b]))}return!c});return c}}($.fn.hasClass);$.fn.attr=function(h){return function(b,c,d){if(typeof b==='string'&&c===undefined){var e=h.apply(this,[b,c,d]);if(e&&e.baseVal&&e.baseVal.numberOfItems!=null){c='';e=e.baseVal;if(b=='transform'){for(var i=0;i<e.numberOfItems;i++){var f=e.getItem(i);switch(f.type){case 1:c+=' matrix('+f.matrix.a+','+f.matrix.b+','+f.matrix.c+','+f.matrix.d+','+f.matrix.e+','+f.matrix.f+')';break;case 2:c+=' translate('+f.matrix.e+','+f.matrix.f+')';break;case 3:c+=' scale('+f.matrix.a+','+f.matrix.d+')';break;case 4:c+=' rotate('+f.angle+')';break;case 5:c+=' skewX('+f.angle+')';break;case 6:c+=' skewY('+f.angle+')';break}}e=c.substring(1)}else{e=e.getItem(0).valueAsString}}return(e&&e.baseVal?e.baseVal.valueAsString:e)}var g=b;if(typeof b==='string'){g={};g[b]=c}return this.each(function(){if($.svg.isSVGElem(this)){for(var n in g){var a=($.isFunction(g[n])?g[n]():g[n]);(d?this.style[n]=a:this.setAttribute(n,a))}}else{h.apply($(this),[b,c,d])}})}}($.fn.attr);$.fn.removeAttr=function(b){return function(a){return this.each(function(){if($.svg.isSVGElem(this)){(this[a]&&this[a].baseVal?this[a].baseVal.value='':this.setAttribute(a,''))}else{b.apply($(this),[a])}})}}($.fn.removeAttr);$.extend($.cssNumber,{'stopOpacity':true,'strokeMitrelimit':true,'strokeOpacity':true});if($.cssProps){$.css=function(d){return function(a,b){var c=(b.match(/^svg.*/)?$(a).attr($.cssProps[b]||b):'');return c||d(a,b)}}($.css)}function anySVG(a){for(var i=0;i<a.length;i++){if(a[i].nodeType==1&&a[i].namespaceURI==$.svg.svgNS){return true}}return false}$.expr.relative['+']=function(d){return function(a,b,c){d(a,b,c||anySVG(a))}}($.expr.relative['+']);$.expr.relative['>']=function(d){return function(a,b,c){d(a,b,c||anySVG(a))}}($.expr.relative['>']);$.expr.relative['']=function(d){return function(a,b,c){d(a,b,c||anySVG(a))}}($.expr.relative['']);$.expr.relative['~']=function(d){return function(a,b,c){d(a,b,c||anySVG(a))}}($.expr.relative['~']);$.expr.find.ID=function(d){return function(a,b,c){return($.svg.isSVGElem(b)?[b.ownerDocument.getElementById(a[1])]:d(a,b,c))}}($.expr.find.ID);var j=document.createElement('div');j.appendChild(document.createComment(''));if(j.getElementsByTagName('*').length>0){$.expr.find.TAG=function(a,b){var c=b.getElementsByTagName(a[1]);if(a[1]==='*'){var d=[];for(var i=0;c[i]||c.item(i);i++){if((c[i]||c.item(i)).nodeType===1){d.push(c[i]||c.item(i))}}c=d}return c}}$.expr.preFilter.CLASS=function(a,b,c,d,f,g){a=' '+a[1].replace(/\\/g,'')+' ';if(g){return a}for(var i=0,elem={};elem!=null;i++){elem=b[i];if(!elem){try{elem=b.item(i)}catch(e){}}if(elem){var h=(!$.svg.isSVGElem(elem)?elem.className:(elem.className?elem.className.baseVal:'')||elem.getAttribute('class'));if(f^(h&&(' '+h+' ').indexOf(a)>-1)){if(!c)d.push(elem)}else if(c){b[i]=false}}}return false};$.expr.filter.CLASS=function(a,b){var c=(!$.svg.isSVGElem(a)?a.className:(a.className?a.className.baseVal:a.getAttribute('class')));return(' '+c+' ').indexOf(b)>-1};$.expr.filter.ATTR=function(g){return function(c,d){var e=null;if($.svg.isSVGElem(c)){e=d[1];$.expr.attrHandle[e]=function(a){var b=a.getAttribute(e);return b&&b.baseVal||b}}var f=g(c,d);if(e){$.expr.attrHandle[e]=null}return f}}($.expr.filter.ATTR)})(jQuery);// Generated by CoffeeScript 2.5.1
+(function() {
   var $;
 
   $ = this.jQuery;
 
   this.magicmockup = (function() {
-    var $doc, defaultLayer, filter, init, layers, _dispatch, _findFilters, _getDescription, _getHash, _getInk, _handleClick, _handleHover, _hideLayers, _initLayers, _setInitialPage, _showLayer, _stripInlineJS;
+    var $doc, _dispatch, _findFilters, _getDescription, _getHash, _getInk, _handleClick, _handleHover, _hideLayers, _initLayers, _setInitialPage, _showLayer, _stripInlineJS, defaultLayer, filter, init, layers;
     $doc = $(this.document);
     layers = {};
     filter = {};
     defaultLayer = '';
+    // Convenience function to grab attributes from the Inkscape namespace
     _getInk = function(el, attr) {
       var inkNS;
       inkNS = 'http://www.inkscape.org/namespaces/inkscape';
       return el.getAttributeNS(inkNS, attr);
     };
-    _initLayers = function($layers) {
-      if ($layers == null) $layers = $('g');
+    // Add each layer to the layer object (if it contains a an Inkscape label)
+    _initLayers = function($layers = $('g')) {
       $layers.each(function() {
         var group, label;
         group = _getInk(this, 'groupmode');
         label = _getInk(this, 'label');
         if (group === 'layer') {
           layers[label] = this;
-          if ($(this).is(':visible')) return defaultLayer = label;
+          if ($(this).is(':visible')) {
+            return defaultLayer = label;
+          }
         }
       });
     };
+    // Find all filters and store in the filter object
     _findFilters = function() {
       return $doc.find('filter').each(function() {
         var label;
@@ -9317,65 +9322,73 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         return filter[label] = this.id;
       });
     };
-    _dispatch = function(context, _arg) {
-      var act, command, params, val;
-      command = _arg[0], val = _arg[1];
+    // Do the heavy lifting
+    // (right now, there's only "next" for switching pages; more to come)
+    _dispatch = function(context, [command, val]) {
+      var act, params;
       act = {
         load: function(url) {
           url = url.shift();
           return window.location = url || val;
         },
         next: function(location) {
-          var _base;
+          var base;
           location = location.shift();
           if (location.match(/#/)) {
+            // if "#" is added, then load the new page
             return act.load(location);
           } else {
+            // Hide the current visible layer
             $(context).parents('g').not('[style=display:none]').last().hide();
-            if (typeof (_base = $(layers[location])).show === "function") {
-              _base.show();
+            if (typeof (base = $(layers[location])).show === "function") {
+              base.show();
             }
-            if (location === defaultLayer) location = '';
+            if (location === defaultLayer) {
+              location = '';
+            }
             return window.location.hash = location;
           }
         },
         show: function(show_layers) {
-          var layer, _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = show_layers.length; _i < _len; _i++) {
-            layer = show_layers[_i];
-            _results.push($(layers[layer]).show());
+          var i, layer, len, results;
+          results = [];
+          for (i = 0, len = show_layers.length; i < len; i++) {
+            layer = show_layers[i];
+            results.push($(layers[layer]).show());
           }
-          return _results;
+          return results;
         },
         hide: function(hide_layers) {
-          var layer, _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = hide_layers.length; _i < _len; _i++) {
-            layer = hide_layers[_i];
-            _results.push($(layers[layer]).hide());
+          var i, layer, len, results;
+          results = [];
+          for (i = 0, len = hide_layers.length; i < len; i++) {
+            layer = hide_layers[i];
+            results.push($(layers[layer]).hide());
           }
-          return _results;
+          return results;
         },
         toggle: function(toggle_layers) {
-          var layer, _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = toggle_layers.length; _i < _len; _i++) {
-            layer = toggle_layers[_i];
-            _results.push($(layers[layer]).toggle());
+          var i, layer, len, results;
+          results = [];
+          for (i = 0, len = toggle_layers.length; i < len; i++) {
+            layer = toggle_layers[i];
+            results.push($(layers[layer]).toggle());
           }
-          return _results;
+          return results;
         },
         fadeOut: function(params) {
-          var easing, layer, time, _ref, _ref2;
+          var easing, layer, ref, ref1, time;
           if ((params != null) && params.length > 0) {
+            // Capture parameters with defaults
             layer = params[0];
-            time = (_ref = params[1]) != null ? _ref : 1;
-            easing = (_ref2 = params[2]) != null ? _ref2 : 'linear';
+            time = (ref = params[1]) != null ? ref : 1;
+            easing = (ref1 = params[2]) != null ? ref1 : 'linear';
+            // Convert time from seconds to milliseconds
             time = parseInt(time) * 1000;
             $(layers[layer]).attr('opacity', 1).animate({
               svgOpacity: 0.0
             }, time, easing, function() {});
+            // Reset opacity but hide
             return $(this).hide().attr('opacity', 1);
           }
         }
@@ -9383,13 +9396,18 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
       params = val != null ? val.split(',') : void 0;
       return typeof act[command] === "function" ? act[command](params) : void 0;
     };
+    // Return the description for an element
     _getDescription = function(el) {
       return $(el).children('desc').text();
     };
+    // If there's inline JS, strip it (and provide warnings)
     _stripInlineJS = function() {
       var $onclick;
       $onclick = $('[onclick]');
-      if (!$onclick.length) return;
+      if (!$onclick.length) {
+        return;
+      }
+      // Warn about inline JS (if console.warn is available)
       if (console && console.warn) {
         if (typeof console.group === "function") {
           console.group('Warning: inline JavaScript found (and deactivated)');
@@ -9397,61 +9415,89 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         $onclick.each(function() {
           return console.warn(this.id, ':', this.onclick);
         });
-        if (typeof console.groupEnd === "function") console.groupEnd();
+        if (typeof console.groupEnd === "function") {
+          console.groupEnd();
+        }
       }
+      // Strip the inline JS
       $onclick.each(function() {
         return this.onclick = void 0;
       });
     };
+    // Return the URL fragment
     _getHash = function() {
       return window.location.hash.substr(1);
     };
+    // Hide all layers
     _hideLayers = function() {
-      var layer, name, _results;
-      _results = [];
+      var layer, name, results;
+      results = [];
       for (name in layers) {
         layer = layers[name];
-        _results.push($(layer).hide());
+        results.push($(layer).hide());
       }
-      return _results;
+      return results;
     };
+    // Make a layer visible
     _showLayer = function(layer) {
-      if (typeof layer !== 'string') layer = _getHash();
-      if (!(layers[layer] || layer === '')) return;
+      if (typeof layer !== 'string') {
+        layer = _getHash();
+      }
+      // Make sure the layer exists
+      if (!(layers[layer] || layer === '')) {
+        return;
+      }
       _hideLayers();
       return _dispatch(this, ['next', layer || defaultLayer]);
     };
+    // If a hash is specified, view the appropriate layer
     _setInitialPage = function() {
       var layer;
       layer = _getHash();
-      if (layer) return _showLayer(layer);
+      if (layer) {
+        return _showLayer(layer);
+      }
     };
+    // Handle clicks on items with instructions
     _handleClick = function(e) {
-      var action, actions, _i, _len, _ref;
+      var action, actions, i, len, ref;
       actions = _getDescription(e.currentTarget);
-      if (!actions) return;
-      _ref = actions.split(/([\s\n]+)/);
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        action = _ref[_i];
+      // Skip if there's no description
+      if (!actions) {
+        return;
+      }
+      ref = actions.split(/([\s\n]+)/);
+      for (i = 0, len = ref.length; i < len; i++) {
+        action = ref[i];
         _dispatch(this, action.split(/\=/));
       }
     };
+    // Change the cursor for interactive elements
     _handleHover = function(e) {
       var $this, hover, isHovered;
       $this = $(this);
       isHovered = e.type === "mouseenter";
-      if (!_getDescription(e.currentTarget)) return;
+      // Skip if there's no description
+      if (!_getDescription(e.currentTarget)) {
+        return;
+      }
+      // Alter hover CSS if there's a hover filter
       if (filter.hover) {
-        hover = isHovered ? "url(#" + filter.hover + ")" : "none";
+        hover = isHovered ? `url(#${filter.hover})` : "none";
         $this.css({
           filter: hover
         });
       }
-      if ($this.data('hoverable')) return;
+      // Skip if already hoverable
+      if ($this.data('hoverable')) {
+        return;
+      }
+      // We're handling the hoverable state now
       $this.data('hoverable', true).css({
         cursor: 'pointer'
       });
     };
+    // Run on page load
     init = function(loadEvent) {
       _initLayers();
       _setInitialPage();
@@ -9463,11 +9509,11 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
         hover: _handleHover
       });
     };
-    return {
-      init: init
-    };
+    return {init}; // Public exports
   })();
 
+  
+  // Hack to attach the init to <svg/> for an unobtrusive SVG onload
   $('svg').attr({
     onload: 'magicmockup.init()'
   });
