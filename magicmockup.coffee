@@ -36,7 +36,7 @@ $ = @jQuery
   # Do the heavy lifting
   # (right now, there's only "next" for switching pages; more to come)
   _dispatch = (context, [command, val]) ->
-    act =
+    act = {
       load: (url) ->
         url = url.shift()
         window.location = url || val
@@ -80,9 +80,10 @@ $ = @jQuery
           time = parseInt(time) * 1000
           $(layers[layer])
             .attr('opacity', 1)
-            .animate svgOpacity: 0.0, time, easing, () ->
+            .animate { svgOpacity: 0.0 }, time, easing, () ->
             # Reset opacity but hide
             $(this).hide().attr 'opacity', 1
+    }
 
     params = val?.split ','
     act[command]?(params)
@@ -167,13 +168,13 @@ $ = @jQuery
     # Alter hover CSS if there's a hover filter
     if filter.hover
       hover = if isHovered then "url(##{filter.hover})" else "none"
-      $this.css filter: hover
+      $this.css({ filter: hover })
 
     # Skip if already hoverable
     return if $this.data('hoverable')
 
     # We're handling the hoverable state now
-    $this.data('hoverable', true).css(cursor: 'pointer')
+    $this.data('hoverable', true).css({ cursor: 'pointer' })
 
     return
 
@@ -187,13 +188,14 @@ $ = @jQuery
 
     $(window).bind 'hashchange', _showLayer
 
-    $doc.delegate 'g',
-      click : _handleClick
-      hover : _handleHover
+    $doc.delegate 'g', {
+      click: _handleClick
+      hover: _handleHover
+    }
 
 
-  {init} # Public exports
+  { init } # Public exports
 
 
 # Hack to attach the init to <svg/> for an unobtrusive SVG onload
-$('svg').attr onload: 'magicmockup.init()'
+$('svg').attr { onload: 'magicmockup.init()' }
