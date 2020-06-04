@@ -57,7 +57,7 @@ $ = @jQuery
           location = '' if location is defaultLayer
 
           window.location.hash = location
-      
+
       show: (show_layers) ->
         for layer in show_layers
           $(layers[layer]).show()
@@ -81,7 +81,7 @@ $ = @jQuery
           $(layers[layer])
             .attr('opacity', 1)
             .animate svgOpacity: 0.0, time, easing, () ->
-            # Reset opacity but hide 
+            # Reset opacity but hide
             $(this).hide().attr 'opacity', 1
 
     params = val?.split ','
