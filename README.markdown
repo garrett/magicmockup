@@ -60,18 +60,10 @@ Then, when you open Inkscape, go to File > New, and choose InteractiveMockup fro
 MagicMarkup is written in CoffeeScript and uses jQuery. You'll
 need CoffeeScript installed to develop.
 
-You may install CoffeeScript either via:
+You may install CoffeeScript via:
 
-    gem install coffee-script
+    npm install coffeescript
   
-...or...
-
-    npm install coffee-script
-  
-...Depending on if you are using Ruby & Gem or Node.js & NPM.
-As CoffeeScript is JavaScript, we suggest installing Node.js
-and using `npm` for installation.
-
 Build magicmockup.js using `cake build` - this will compile magicmockup.coffee and concatenate it with the dependencies in the deps/ directory.
 
 There is a really simple script included for helping you to
