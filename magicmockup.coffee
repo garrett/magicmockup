@@ -187,7 +187,7 @@ $ = @jQuery
 
     $(window).bind 'hashchange', _showLayer
 
-    $doc.delegate 'g'
+    $doc.delegate 'g',
       click : _handleClick
       hover : _handleHover
 
